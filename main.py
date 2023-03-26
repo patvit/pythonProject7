@@ -1,7 +1,8 @@
 #курсовая работа
 #from tqdm import tqdm
-#from tqdm import tqdm
-#from time import sleep
+import tqdm
+from tqdm import tqdm
+from time import sleep
 import json
 import datetime
 import time
@@ -77,15 +78,15 @@ if flag:
     #bar = range(num)
     #print('bar= ', bar)
 
-    for item in range(num):
+    for item in tqdm(range(num), ncols=80, ascii=True, desc='Total'):
+        sleep(0.1)
         file = {
         }
 
 
 
-        print(f"Загрузка изображения {item+1} из {num} изображений")
-        #bar.next()
-        #time.sleep(1)
+        #print(f"Загрузка изображения {item+1} из {num} изображений")
+
         files_url = res1['response']['items'][item]['sizes'][-1]['url']
         date = res1['response']['items'][0]['date']
         date_time = datetime.datetime.fromtimestamp(date)
@@ -104,7 +105,6 @@ if flag:
         files.append(file)
 
         result = uploader.upload(date_str)
-    bar.finish()
     with open('out.json', "w") as out:
         json.dump({"channel": files}, out, ensure_ascii=False, indent=2)
         out.close()
